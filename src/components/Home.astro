@@ -1,0 +1,67 @@
+---
+
+
+---
+
+<div class="content-container h-screen bg-cover bg-center bg-no-repeat text-amber-200 flex flex-col justify-center items-center opacity-0 transition-all duration-500"
+    style="background-image: url('/alicewebsite2.png');">
+    <!-- Título -->
+    <h1 class="text-4xl md:text-8xl font-bold content drop-shadow-lg font-emilys sticky top-0 z-10">Welcome to Alice Vaniglia's World</h1>
+    <p class="mt-4 text-lg content">Dame un pedazo de ti y te escribiré toda una historia...</p>
+    
+    <!-- Sección de poemas (también en el mismo contenedor) -->
+    <div class="poems-section p-10 bg-transparent mt-10">
+        <h2 class="text-3xl font-bold">Poemas</h2>
+        <div class="poems-list">
+            <!-- Aquí van los poemas -->
+            <p>Poema 1</p>
+            <p>Poema 2</p>
+            <p>Poema 3</p>
+            <!-- Más poemas -->
+        </div>
+    </div>
+</div>
+
+<script>
+    import { gsap } from "gsap";
+    import ScrollTrigger from "gsap/ScrollTrigger";
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Animación de fondo
+    gsap.to('.content-container', {
+        opacity: 1,
+        duration: 1.5,
+    });
+
+    // Animación de texto
+    gsap.from('.content', {
+        opacity: 0,
+        y: 50,
+        duration: 1.5,
+        stagger: 0.3,  // Aparecen con un pequeño retraso entre elementos
+        delay: 1.5, // Empieza después de que el fondo se haya mostrado
+    });
+
+    // Animación para que el título se haga más pequeño y se quede pegado al hacer scroll
+    gsap.to('.content', {
+        scrollTrigger: {
+            trigger: '.content-container',
+            start: "top top", // Comienza cuando el top del contenedor toca el top de la pantalla
+            end: "bottom top", // Termina cuando el bottom del contenedor toca el top de la pantalla
+            scrub: true, // Hace que la animación se controle con el scroll
+        },
+        scale: 0.7,  // El título se reducirá al 70% de su tamaño
+        opacity: 0.7, // El título también se desvanecerá un poco
+    });
+
+    // Zoom de la imagen de fondo al hacer scroll
+    gsap.to('.content-container', {
+        scrollTrigger: {
+            trigger: '.content-container',
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+        },
+        backgroundSize: '120%',  // Aumentamos el tamaño de la imagen de fondo al hacer scroll
+    });
+</script>
