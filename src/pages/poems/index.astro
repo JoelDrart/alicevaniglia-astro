@@ -1,0 +1,49 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import "../../styles/global.css";
+import type { SanityDocument } from "@sanity/client";
+// import { SanityClient } from "sanity";
+import { sanityClient } from "sanity:client";
+import type { Poem } from "../../types";
+
+
+
+const POSTS_QUERY = `*[
+  _type == "poem" && defined(slug.current)
+]|order(publishedAt desc)[0...12]{
+  _id,
+  title,
+  slug,
+  publishedAt,
+  body
+}`;
+
+const poems = await sanityClient.fetch<Poem[]>(POSTS_QUERY);
+console.log(poems);
+---
+
+<Layout>
+    <main class="container mx-auto min-h-screen max-w-3xl p-8">
+        <h1 class="text-4xl font-bold mb-8">Poemas</h1>
+        <ul class="flex flex-col gap-y-4">
+            {
+                poems.map(
+                    (poem:Poem) => (
+                        <li class="hover:underline">
+                            <a href={`/poems/${poem.slug.current}`}>
+                                <h2 class="text-xl font-semibold">
+                                    {poem.title}
+                                </h2>
+                                <p>
+                                    {new Date(
+                                        poem.publishedAt
+                                    ).toLocaleDateString()}
+                                </p>
+                            </a>
+                        </li>
+                    )
+                )
+            }
+        </ul>
+    </main>
+</Layout>
