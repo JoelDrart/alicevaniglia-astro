@@ -1,0 +1,94 @@
+---
+// Importar Astro.url para detectar la ruta actual
+
+const currentPath = Astro.url.pathname; // Detecta la ruta actual
+
+const menuItems = [
+    { name: "Inicio", path: "/" },
+    { name: "Poemas", path: "/poems" },
+    { name: "Sobre mí", path: "/about" },
+];
+---
+
+<header
+    id="navbar"
+    class="fixed top-0 w-full z-50 transition-colors duration-300"
+>
+    <nav
+        class="container mx-auto flex justify-between items-center p-4 transition-colors duration-300"
+    >
+        <!-- Logo y título -->
+        <div class="flex items-center gap-x-2">
+            <img class="w-6 h-6" src="/favicon.svg" alt="Alice Vaniglia Logo" />
+            <a href="/" class="font-bold text-2xl text-amber-300">Alice Vaniglia</a>
+        </div>
+
+        <!-- Menú -->
+        <ul class="flex gap-x-6">
+            {
+                menuItems.map((item) => (
+                    <li>
+                        <a
+                            href={item.path}
+                            class={`hover:underline px-2 py-1 rounded-md transition-colors ${
+                                currentPath === item.path
+                                    ? "font-bold text-amber-300"
+                                    : ""
+                            } ${currentPath === item.path ? "pointer-events-none" : ""}`}
+                        >
+                            {item.name}
+                        </a>
+                    </li>
+                ))
+            }
+        </ul>
+    </nav>
+</header>
+
+<!-- GSAP y Script para animación -->
+
+<script>
+    import { gsap } from "gsap";
+    document.addEventListener("DOMContentLoaded", () => {
+        const navbar = document.getElementById("navbar");
+        let lastScroll = window.scrollY;
+        let isHidden = false;
+
+        navbar &&
+            window.addEventListener("scroll", () => {
+                const currentScroll = window.scrollY;
+
+                // Si estamos en la parte superior, quitar el fondo
+                if (currentScroll === 0) {
+                    navbar.classList.remove("bg-black/20", "backdrop-blur-md");
+                } else {
+                    navbar.classList.add("bg-black/20", "backdrop-blur-md");
+                }
+
+                // Detectar dirección del scroll y aplicar animaciones
+                if (
+                    currentScroll > lastScroll &&
+                    !isHidden &&
+                    currentScroll > 50
+                ) {
+                    gsap.to(navbar, {
+                        y: -100,
+                        opacity: 0,
+                        duration: 0.5,
+                        ease: "power2.out",
+                    });
+                    isHidden = true;
+                } else if (currentScroll < lastScroll && isHidden) {
+                    gsap.to(navbar, {
+                        y: 0,
+                        opacity: 1,
+                        duration: 0.4,
+                        ease: "bounce.out",
+                    });
+                    isHidden = false;
+                }
+
+                lastScroll = currentScroll;
+            });
+    });
+</script>

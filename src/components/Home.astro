@@ -3,22 +3,24 @@
 
 ---
 
-<div class="content-container h-screen bg-cover bg-center bg-no-repeat text-amber-200 flex flex-col justify-center items-center opacity-0 transition-all duration-500"
+<div class="content-container h-screen bg-cover bg-center bg-no-repeat text-amber-200 flex flex-col justify-center items-center transition-all duration-500"
     style="background-image: url('/alicewebsite2.png');">
     <!-- Título -->
-    <h1 class="text-4xl md:text-8xl font-bold content drop-shadow-lg font-emilys sticky top-0 z-10 ">Welcome to Alice Vaniglia's World</h1>
+    <h1 class="text-4xl md:text-8xl font-bold content drop-shadow-lg font-emilys ">Welcome to Alice Vaniglia's World</h1>
     <p class="mt-4 text-lg content">Dame un pedazo de ti y te escribiré toda una historia...</p>
-    
-    <!-- Sección de poemas (también en el mismo contenedor) -->
-    <div class="poems-section p-10 bg-transparent mt-10">
-        <h2 class="text-3xl font-bold">Poemas</h2>
-        <div class="poems-list">
-            <!-- Aquí van los poemas -->
-            <p>Poema 1</p>
-            <p>Poema 2</p>
-            <p>Poema 3</p>
-            <!-- Más poemas -->
-        </div>
+
+
+</div>
+
+<!-- Sección de poemas (también en el mismo contenedor) -->
+<div class="poems-section p-10 bg-transparent mt-10">
+    <h2 class="text-3xl font-bold">Poemas</h2>
+    <div class="poems-list">
+        <!-- Aquí van los ultimos poemas -->
+        <p>Poema 1</p>
+        <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@alice.vaniglia/video/7475532700284128567" data-video-id="7475532700284128567" style="max-width: 605px;min-width: 325px;" > <section> <a target="_blank" title="@alice.vaniglia" href="https://www.tiktok.com/@alice.vaniglia?refer=embed">@alice.vaniglia</a> 🤍🫶 <a title="fyp" target="_blank" href="https://www.tiktok.com/tag/fyp?refer=embed">#fyp</a> <a title="viral_video" target="_blank" href="https://www.tiktok.com/tag/viral_video?refer=embed">#viral_video</a> <a title="amor" target="_blank" href="https://www.tiktok.com/tag/amor?refer=embed">#amor</a> <a title="poetry" target="_blank" href="https://www.tiktok.com/tag/poetry?refer=embed">#poetry</a> <a title="poetrystatus" target="_blank" href="https://www.tiktok.com/tag/poetrystatus?refer=embed">#poetrystatus</a> <a title="poem" target="_blank" href="https://www.tiktok.com/tag/poem?refer=embed">#poem</a> <a title="escritos" target="_blank" href="https://www.tiktok.com/tag/escritos?refer=embed">#escritos</a> <a title="foryoupage" target="_blank" href="https://www.tiktok.com/tag/foryoupage?refer=embed">#foryoupage</a> <a title="dios" target="_blank" href="https://www.tiktok.com/tag/dios?refer=embed">#dios</a> <a title="latidos" target="_blank" href="https://www.tiktok.com/tag/latidos?refer=embed">#latidos</a> <a title="romancebooks" target="_blank" href="https://www.tiktok.com/tag/romancebooks?refer=embed">#romancebooks</a> <a title="corazon" target="_blank" href="https://www.tiktok.com/tag/corazon?refer=embed">#corazon</a> <a title="letras" target="_blank" href="https://www.tiktok.com/tag/letras?refer=embed">#letras</a> <a target="_blank" title="♬ suara asli  - gabut woi" href="https://www.tiktok.com/music/suara-asli-gabut-woi-7395947294968466182?refer=embed">♬ suara asli  - gabut woi</a> </section> </blockquote> <script async src="https://www.tiktok.com/embed.js"></script>
+        <p>Poema 2</p>
+        <p>Poema 3</p>
     </div>
 </div>
 
@@ -27,41 +29,28 @@
     import ScrollTrigger from "gsap/ScrollTrigger";
     gsap.registerPlugin(ScrollTrigger);
 
-    // Animación de fondo
-    gsap.to('.content-container', {
-        opacity: 1,
-        duration: 1.5,
-    });
-
-    // Animación de texto
+    // Animación de texto (Título)
     gsap.from('.content', {
         opacity: 0,
         y: 50,
         duration: 1.5,
-        stagger: 0.3,  // Aparecen con un pequeño retraso entre elementos
-        delay: 1.5, // Empieza después de que el fondo se haya mostrado
+        stagger: 0.3,
+        delay: 0.2,
     });
 
-    // Animación para que el título se haga más pequeño y se quede pegado al hacer scroll
-    gsap.to('.content', {
+    // Animación de la sección de poemas al hacer scroll
+    gsap.from('.poems-section', {
+        opacity: 0,
+        y: 50,
+        duration: 1.5,
+        stagger: 0.3,
+        delay: 0.2,
         scrollTrigger: {
-            trigger: '.content-container',
-            start: "top top", // Comienza cuando el top del contenedor toca el top de la pantalla
-            end: "bottom top", // Termina cuando el bottom del contenedor toca el top de la pantalla
-            scrub: true, // Hace que la animación se controle con el scroll
+            trigger: '.poems-section', // El elemento a observar
+            start: 'top 80%', // Inicia la animación cuando el 80% de la sección esté en la vista
+            end: 'top 20%', // Finaliza la animación cuando esté a 20% de la vista
+            scrub: false, // Hace que la animación se sincronice con el desplazamiento
+            markers: false, // Opcional: Muestra marcadores de inicio y fin (útil para depuración)
         },
-        scale: 0.7,  // El título se reducirá al 70% de su tamaño
-        opacity: 0.7, // El título también se desvanecerá un poco
-    });
-
-    // Zoom de la imagen de fondo al hacer scroll
-    gsap.to('.content-container', {
-        scrollTrigger: {
-            trigger: '.content-container',
-            start: "top top",
-            end: "bottom top",
-            scrub: true,
-        },
-        backgroundSize: '120%',  // Aumentamos el tamaño de la imagen de fondo al hacer scroll
     });
 </script>

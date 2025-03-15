@@ -1,37 +1,22 @@
 ---
-import { sanityClient } from "sanity:client";
 import { PortableText } from "astro-portabletext";
 import type { Poem } from "../../types";
-import "../../styles/global.css";
 import Layout from "../../layouts/Layout.astro";
+import { getPoem, getPaths } from "../../sanity/sanity";
 
 export async function getStaticPaths() {
-  const SLUGS_QUERY = `*[_type == "poem" && defined(slug.current)]{
-    "params": { "slug": slug.current }
-  }`;
-  
-  const paths = await sanityClient.fetch(SLUGS_QUERY);
-  return paths;
+  return await getPaths();
 }
 
 const { slug } = Astro.params;
 
-const POEM_QUERY = `*[
-  _type == "poem"
-  && slug.current == $slug
-][0]{
-  title,
-  publishedAt,
-  body
-}`;
-
-const poem = await sanityClient.fetch<Poem>(POEM_QUERY, { slug });
+const poem : Poem = await getPoem(slug);
 
 if (!poem) {
   throw new Error("Poema no encontrado");
 }
 ---
-<Layout>
+<Layout title={poem.title}>
 
     <main class="container mx-auto min-h-screen max-w-3xl p-8">
         <h1 class="text-4xl font-bold">{poem.title}</h1>
